@@ -18,4 +18,10 @@ module.exports = (server) => {
         res.send(result.recordset);
         return next();
     });
+
+    server.get('/torneio/consulta/assist', async (req, res, next) => {
+        const result = await controllerTorneio.controllers().consulta_assist(req)
+        res.send(result.recordset);
+        return next();
+    });
 }

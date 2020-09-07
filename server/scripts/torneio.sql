@@ -52,3 +52,18 @@ END CATCH
         cast(abate as int) desc, 
         nick asc
 --END#consulta_abate#
+
+--#consulta_assist#
+    select 
+        nick, 
+        asist, 
+        nometime,
+        ROW_NUMBER()OVER(
+            ORDER BY cast(asist as int) desc
+        ) as [number]
+    from 
+        usuario 
+    order by 
+        cast(asist as int) desc, 
+        nick asc
+--END#consulta_assist#
