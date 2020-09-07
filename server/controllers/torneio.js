@@ -23,9 +23,18 @@ const controllers = () => {
         return result
     }
 
+    const consulta_abate = async (req) => {
+        var ComandoSQL = await readCommandSql.retornaStringSql('consulta_abate', 'torneio');
+        var result = await db.ExecuteQuery(ComandoSQL, req.body);
+        //var result = await db.ExecuteQuery(ComandoSQL);
+        console.log(result);
+        return result
+    }
+
     return Object.create({
         cadastrar,
-        consulta
+        consulta,
+        consulta_abate
     })
 
 }

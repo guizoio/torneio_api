@@ -18,6 +18,12 @@ BEGIN TRY
             0,
             0
         )
+
+        insert into torneio..usuario values (@top, 'Top Lane', 0, 0, 0, @time)
+        insert into torneio..usuario values (@jg, 'Jungle', 0, 0, 0, @time)
+        insert into torneio..usuario values (@mid, 'Mid Lane', 0, 0, 0, @time)
+        insert into torneio..usuario values (@adc, 'Adc', 0, 0, 0, @time)
+        insert into torneio..usuario values (@sup, 'Suporte', 0, 0, 0, @time)
                 
     COMMIT TRAN
         SELECT '{ "resultado" : "sucesso", "msg" : "Cadastro realizado com sucesso!" , "class" : "success" }' as retorno
@@ -31,3 +37,18 @@ END CATCH
 --#consulta_equipe#
     select * from torneio..equipe
 --END#consulta_equipe#
+
+--#consulta_abate#
+    select 
+        nick, 
+        abate, 
+        nometime,
+        ROW_NUMBER()OVER(
+            ORDER BY cast(abate as int) desc
+        ) as [number]
+    from 
+        usuario 
+    order by 
+        cast(abate as int) desc, 
+        nick asc
+--END#consulta_abate#
