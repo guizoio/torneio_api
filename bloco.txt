@@ -1,0 +1,3 @@
+ docker build --tag=brzoio/minha-api:v1 ./server/
+
+docker run --name minha-api -p 4403:4403 0be48e278892
