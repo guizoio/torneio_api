@@ -35,7 +35,7 @@ END CATCH
 --END#cadastrar_equipe#
 
 --#consulta_equipe#
-    select * from torneio..equipe
+    select * from torneio..equipe where apagado=0
 --END#consulta_equipe#
 
 --#consulta_abate#
@@ -47,7 +47,9 @@ END CATCH
             ORDER BY cast(abate as int) desc
         ) as [number]
     from 
-        usuario 
+        usuario
+    where 
+        cast(abate as int)>0
     order by 
         cast(abate as int) desc, 
         nick asc
@@ -63,6 +65,8 @@ END CATCH
         ) as [number]
     from 
         usuario 
+    where 
+        cast(asist as int)>0
     order by 
         cast(asist as int) desc, 
         nick asc
