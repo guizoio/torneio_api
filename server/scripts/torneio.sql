@@ -3,7 +3,7 @@ BEGIN TRY
     BEGIN TRAN 
 
         INSERT INTO 
-            torneio..equipe (toplane, jungle, midlane, carry, suporte, nomeTime, numero, datacad, pago, status, apagado)
+            torneio..equipe (toplane, jungle, midlane, carry, suporte, nomeTime, numero, datacad, pago, status, apagado, senha)
         values 
         (
             @top,
@@ -16,7 +16,8 @@ BEGIN TRY
             getdate(),
             0,
             0,
-            0
+            0,
+            @senha
         )
 
         insert into torneio..usuario values (@top, 'Top Lane', 0, 0, 0, @time)
@@ -49,7 +50,7 @@ END CATCH
     from 
         usuario
     where 
-        cast(abate as int)>0
+        cast(abate as int)>=0
     order by 
         cast(abate as int) desc, 
         nick asc
@@ -66,7 +67,7 @@ END CATCH
     from 
         usuario 
     where 
-        cast(asist as int)>0
+        cast(asist as int)>=0
     order by 
         cast(asist as int) desc, 
         nick asc
