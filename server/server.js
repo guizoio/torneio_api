@@ -6,6 +6,22 @@ const recursiveReaddir = require('recursive-readdir');
 
 const path = require('path');
 
+
+
+//O módulo restify-cors-middleware fornece uma versão do cors para as requisições vindas de outro domínio
+const corsMiddleware = require("restify-cors-middleware");
+
+//Seta a origens que vão poder acessar a api
+const cors = corsMiddleware({
+  origins: ["*"],
+  allowHeaders: ["API-Token,Authorization"],
+  exposeHeaders: ["API-Token-Expiry"]
+});
+
+
+
+
+
 const server = restify.createServer({
     name: 'MINHA_API',
     version: '1.0.0'
@@ -52,20 +68,22 @@ recursiveReaddir(pathFiles, ['!*.js'], (err, files) => {
     files.forEach(element => { require(element)(server) })
 });
 
+server.pre(cors.preflight);
+server.use(cors.actual);
 
-server.use(
-    function nocache(req, res, next) {
-        res.header("Access-Control-Allow-Origin", "*");
-        res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-        res.header("Pragma", "no-cache");
+// server.use(
+//     function nocache(req, res, next) {
+//         res.header("Access-Control-Allow-Origin", "*");
+//         res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+//         res.header("Pragma", "no-cache");
        
-        // res.header("Access-Control-Allow-Origin", "*");
-        // res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
-        // res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+//         // res.header("Access-Control-Allow-Origin", "*");
+//         // res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
+//         // res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
 
-        next();
-    }
+//         next();
+//     }
 
-);
+// );
 
 module.exports = Object.assign({ server, restify, env, swaggerSpec });

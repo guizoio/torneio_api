@@ -40,7 +40,7 @@ END CATCH
 --END#consulta_equipe#
 
 --#consulta_abate#
-    select 
+    select top 5
         nick, 
         abate, 
         nometime,
@@ -57,7 +57,7 @@ END CATCH
 --END#consulta_abate#
 
 --#consulta_assist#
-    select 
+    select top 5
         nick, 
         asist, 
         nometime,
