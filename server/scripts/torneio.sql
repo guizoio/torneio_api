@@ -40,35 +40,35 @@ END CATCH
 --END#consulta_equipe#
 
 --#consulta_abate#
-    select top 5
-        nick, 
-        abate, 
-        nometime,
-        ROW_NUMBER()OVER(
-            ORDER BY cast(abate as int) desc
-        ) as [number]
-    from 
-        usuario
-    where 
-        cast(abate as int)>=0
+    select top 5 * from (
+        select
+                nick, 
+                abate, 
+                nometime,
+                cast(ROW_NUMBER()OVER(
+                    ORDER BY cast(abate as int) desc, nick asc
+                ) as int) as [number]
+            from 
+                usuario
+            where 
+                cast(abate as int)>=0)tbl where tbl.number in (1,2,3,4,5)
     order by 
-        cast(abate as int) desc, 
-        nick asc
+        cast(abate as int) desc
 --END#consulta_abate#
 
 --#consulta_assist#
-    select top 5
-        nick, 
-        asist, 
-        nometime,
-        ROW_NUMBER()OVER(
-            ORDER BY cast(asist as int) desc
-        ) as [number]
-    from 
-        usuario 
-    where 
-        cast(asist as int)>=0
+select top 5 * from (
+        select
+                nick, 
+                asist, 
+                nometime,
+                cast(ROW_NUMBER()OVER(
+                    ORDER BY cast(asist as int) desc, nick asc
+                ) as int) as [number]
+            from 
+                usuario
+            where 
+                cast(asist as int)>=0)tbl where tbl.number in (1,2,3,4,5)
     order by 
-        cast(asist as int) desc, 
-        nick asc
+        cast(asist as int) desc
 --END#consulta_assist#
