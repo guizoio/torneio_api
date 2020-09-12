@@ -1,4 +1,6 @@
 const controllerTorneio = require('../controllers/torneio')
+const UsuarioTokenAcesso = require('../common/protecaoTokenAcesso');
+const Acesso = new UsuarioTokenAcesso();
 module.exports = (server) => {
     
     server.post('/torneio/cadastrar', async (req, res, next) => {
@@ -24,4 +26,17 @@ module.exports = (server) => {
         res.send(result.recordset);
         return next();
     });
+
+    server.post('/torneio/login', async (req, res, next) => {
+        const result = await controllerTorneio.controllers().login(req)
+        res.send(result);
+        return next();
+    });
+
+    server.post('/torneio/validar', Acesso.verificaTokenAcesso, async (req, res, next) => {
+        //const result = await controllerTorneio.controllers().login(req)
+        res.send(Acesso);
+        return next();
+    });
+
 }

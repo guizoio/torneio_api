@@ -72,3 +72,9 @@ select top 5 * from (
     order by 
         cast(asist as int) desc
 --END#consulta_assist#
+
+--#login#
+
+select * from equipe where apagado = 0 and nomeTime = @equipe
+
+--END#login#
