@@ -36,7 +36,14 @@ END CATCH
 --END#cadastrar_equipe#
 
 --#consulta_equipe#
-    select * from torneio..equipe where apagado=0
+
+    select 
+        *
+    from 
+        torneio..equipe 
+    where 
+        apagado=0
+
 --END#consulta_equipe#
 
 --#consulta_abate#
