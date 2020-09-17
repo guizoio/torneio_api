@@ -39,4 +39,10 @@ module.exports = (server) => {
         return next();
     });
 
+    server.post('/torneio/qtdpag', Acesso.verificaTokenAcesso, async (req, res, next) => {
+        const result = await controllerTorneio.controllers().qtdpag(req)
+        res.send(result);
+        return next();
+    });
+
 }

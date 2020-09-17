@@ -3,22 +3,38 @@ BEGIN TRY
     BEGIN TRAN 
 
         INSERT INTO 
-            torneio..equipe (toplane, jungle, midlane, carry, suporte, nomeTime, numero, datacad, pago, status, apagado, senha)
-        values 
-        (
-            @top,
-            @jg,
-            @mid,
-            @adc,
-            @sup,
-            @time,
-            @numero,
-            getdate(),
-            0,
-            0,
-            0,
-            @senha
-        )
+            torneio..equipe 
+            (
+                toplane, 
+                jungle, 
+                midlane, 
+                carry, 
+                suporte, 
+                nomeTime, 
+                numero, 
+                datacad, 
+                pago, 
+                status, 
+                apagado, 
+                senha,
+                qtd
+            )
+            values 
+            (
+                @top,
+                @jg,
+                @mid,
+                @adc,
+                @sup,
+                @time,
+                @numero,
+                getdate(),
+                0,
+                0,
+                0,
+                @senha,
+                0
+            )
 
         insert into torneio..usuario values (@top, 'Top Lane', 0, 0, 0, @time)
         insert into torneio..usuario values (@jg, 'Jungle', 0, 0, 0, @time)
@@ -81,7 +97,9 @@ select top 5 * from (
 --END#consulta_assist#
 
 --#login#
-
-select * from equipe where apagado = 0 and nomeTime = @equipe
-
+select * from equipe where apagado = 0 and nomeTime = cast(@equipe as varchar(max))
 --END#login#
+
+--#qtdpag#
+update equipe set qtd=(qtd+1) where id = @id
+--END#qtdpag#

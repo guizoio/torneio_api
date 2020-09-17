@@ -19,6 +19,14 @@ const controllers = () => {
         return result
     }
 
+    const qtdpag = async (req) => {
+        //req.body.senha = crypto.createHmac('sha256', req.body.senha).digest('hex');
+        var ComandoSQL = await readCommandSql.retornaStringSql('qtdpag', 'torneio');
+        var result = await db.ExecuteQuery(ComandoSQL, req.body);
+        console.log(result);
+        return result
+    }
+
     const consulta = async (req) => {
         var ComandoSQL = await readCommandSql.retornaStringSql('consulta_equipe', 'torneio');
         var result = await db.ExecuteQuery(ComandoSQL, req.body);
@@ -72,6 +80,7 @@ const controllers = () => {
                 "senha": usuarioBanco.recordset[0].senha, 
                 "pago": usuarioBanco.recordset[0].pago, 
                 "status_banco": usuarioBanco.recordset[0].status, 
+                "id": usuarioBanco.recordset[0].id, 
                 "Status": true};
 
         }
@@ -85,7 +94,8 @@ const controllers = () => {
         consulta,
         consulta_abate,
         consulta_assist,
-        login
+        login,
+        qtdpag
     })
 
 }
