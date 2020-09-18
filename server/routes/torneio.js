@@ -45,4 +45,10 @@ module.exports = (server) => {
         return next();
     });
 
+    server.get('/torneio/data/jogos', async (req, res, next) => {
+        const result = await controllerTorneio.controllers().data_jogos(req)
+        res.send(result.recordset);
+        return next();
+    });
+
 }

@@ -88,6 +88,14 @@ const controllers = () => {
             return { "Status": false, "mensagem": "Usuário não cadastrado no sistema" };
         }
     }
+
+    const data_jogos = async (req) => {
+        var ComandoSQL = await readCommandSql.retornaStringSql('data_jogos', 'torneio');
+        var result = await db.ExecuteQuery(ComandoSQL, req.body);
+        //var result = await db.ExecuteQuery(ComandoSQL);
+        console.log(result);
+        return result
+    }
     
     return Object.create({
         cadastrar,
@@ -95,7 +103,8 @@ const controllers = () => {
         consulta_abate,
         consulta_assist,
         login,
-        qtdpag
+        qtdpag,
+        data_jogos
     })
 
 }
