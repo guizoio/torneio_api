@@ -19,10 +19,34 @@ const controllers = () => {
         return result
     }
 
+    const espera_cadastrar = async (req) => {
+        //req.body.senha = crypto.createHmac('sha256', req.body.senha).digest('hex');
+        var ComandoSQL = await readCommandSql.retornaStringSql('espera_cadastrar', 'torneio');
+        var result = await db.ExecuteQuery(ComandoSQL, req.body);
+        console.log(result);
+        return result
+    }
+    
     const qtdpag = async (req) => {
         //req.body.senha = crypto.createHmac('sha256', req.body.senha).digest('hex');
         var ComandoSQL = await readCommandSql.retornaStringSql('qtdpag', 'torneio');
         var result = await db.ExecuteQuery(ComandoSQL, req.body);
+        console.log(result);
+        return result
+    }
+
+    const espera_consulta = async (req) => {
+        var ComandoSQL = await readCommandSql.retornaStringSql('espera_consulta', 'torneio');
+        var result = await db.ExecuteQuery(ComandoSQL, req.body);
+        //var result = await db.ExecuteQuery(ComandoSQL);
+        console.log(result);
+        return result
+    }
+
+    const espera_consulta_id = async (req) => {
+        var ComandoSQL = await readCommandSql.retornaStringSql('espera_consulta_id', 'torneio');
+        var result = await db.ExecuteQuery(ComandoSQL, req.params);
+        //var result = await db.ExecuteQuery(ComandoSQL);
         console.log(result);
         return result
     }
@@ -104,7 +128,10 @@ const controllers = () => {
         consulta_assist,
         login,
         qtdpag,
-        data_jogos
+        data_jogos,
+        espera_cadastrar,
+        espera_consulta,
+        espera_consulta_id
     })
 
 }

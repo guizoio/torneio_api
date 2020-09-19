@@ -128,3 +128,64 @@
         left join equipe e2 on e2.id=j.t2
             and e2.apagado=0
 --END#data_jogos#
+
+--#espera_cadastrar#
+    BEGIN TRY
+        BEGIN TRAN 
+
+            INSERT INTO 
+                torneio..equipe_espera
+                (
+                    toplane, 
+                    jungle, 
+                    midlane, 
+                    carry, 
+                    suporte, 
+                    nomeTime, 
+                    senha, 
+                    apagado, 
+                    status, 
+                    equipe, 
+                    datacad
+                )
+                values 
+                (
+                    @top,
+                    @jg,
+                    @mid,
+                    @adc,
+                    @sup,
+                    @time,
+                    @senha,
+                    0,
+                    0,
+                    0,
+                    getdate()
+                )
+
+        COMMIT TRAN
+            SELECT '{ "resultado" : "sucesso", "msg" : "Cadastro realizado com sucesso!" , "class" : "success" }' as retorno
+    END TRY
+    BEGIN CATCH                    
+        ROLLBACK TRAN   
+            SELECT '{ "resultado" : "erro", "msg" : "Cadastro não realizado!\n motivo:'+ ERROR_MESSAGE() +'" , "class" : "error" }' as retorno               
+    END CATCH
+--END#espera_cadastrar#
+
+--#espera_consulta#
+    select 
+        *
+    from 
+        torneio..equipe_espera
+    where 
+        apagado=0
+--END#espera_consulta#
+
+--#espera_consulta_id#
+    select 
+        *
+    from 
+        torneio..equipe_espera
+    where 
+        apagado=0 and id=@id
+--END#espera_consulta_id#

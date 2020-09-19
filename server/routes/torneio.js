@@ -9,6 +9,24 @@ module.exports = (server) => {
         return next();
     });
 
+    server.post('/torneio/espera/cadastrar', async (req, res, next) => {
+        const result = await controllerTorneio.controllers().espera_cadastrar(req)
+        res.send(result.recordset);
+        return next();
+    });
+
+    server.get('/torneio/espera/consulta', async (req, res, next) => {
+        const result = await controllerTorneio.controllers().espera_consulta(req)
+        res.send(result.recordset);
+        return next();
+    });
+
+    server.get('/torneio/espera/consulta/:id', async (req, res, next) => {
+        const result = await controllerTorneio.controllers().espera_consulta_id(req)
+        res.send(result.recordset);
+        return next();
+    });
+
     server.get('/torneio/consulta', async (req, res, next) => {
         const result = await controllerTorneio.controllers().consulta(req)
         res.send(result.recordset);
