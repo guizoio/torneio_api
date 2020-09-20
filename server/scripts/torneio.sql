@@ -250,5 +250,28 @@
             and e.id=@id
             and e.apagado=0
             and p.apagado=0
+    order BY p.aprovado
 --END#espera_mensagem#
+
+--#espera_mensagem_deletar#
+BEGIN TRY
+        BEGIN TRAN 
+
+            update 
+                pedido_espera 
+            set 
+                apagado=1 
+            where 
+                id = @id
+                    
+        COMMIT TRAN
+            SELECT '{ "resultado" : "sucesso", "msg" : "Mensagem apagado com sucesso" , "class" : "success" }' as retorno
+    END TRY
+    BEGIN CATCH                    
+        ROLLBACK TRAN   
+            SELECT '{ "resultado" : "erro", "msg" : "Não deletado!\n motivo:'+ ERROR_MESSAGE() +'" , "class" : "error" }' as retorno               
+    END CATCH 
+--END#espera_mensagem_deletar#
+
+
 

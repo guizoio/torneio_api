@@ -67,6 +67,14 @@ const controllers = () => {
         return result
     }
 
+    const espera_mensagem_deletar = async (req) => {
+        var ComandoSQL = await readCommandSql.retornaStringSql('espera_mensagem_deletar', 'torneio');
+        var result = await db.ExecuteQuery(ComandoSQL, req.params);
+        //var result = await db.ExecuteQuery(ComandoSQL);
+        console.log(result);
+        return result
+    }
+
     const consulta = async (req) => {
         var ComandoSQL = await readCommandSql.retornaStringSql('consulta_equipe', 'torneio');
         var result = await db.ExecuteQuery(ComandoSQL, req.body);
@@ -194,7 +202,8 @@ const controllers = () => {
         espera_consulta_id,
         espera_cadastrar_pedido,
         espera_login,
-        espera_mensagem
+        espera_mensagem,
+        espera_mensagem_deletar
     })
 
 }

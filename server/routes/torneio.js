@@ -39,6 +39,12 @@ module.exports = (server) => {
         return next();
     });
 
+    server.get('/torneio/espera/mensagem/deletar/:id', async (req, res, next) => {
+        const result = await controllerTorneio.controllers().espera_mensagem_deletar(req)
+        res.send(result.recordset);
+        return next();
+    });
+
     server.get('/torneio/consulta', async (req, res, next) => {
         const result = await controllerTorneio.controllers().consulta(req)
         res.send(result.recordset);
