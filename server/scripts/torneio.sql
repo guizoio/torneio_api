@@ -189,3 +189,66 @@
     where 
         apagado=0 and id=@id
 --END#espera_consulta_id#
+
+--#espera_cadastrar_pedido#
+    BEGIN TRY
+        BEGIN TRAN 
+
+            INSERT INTO 
+                torneio..pedido_espera
+                (
+                    id_equipe_espera,
+                    lane,
+                    nick,
+                    mensagem,
+                    aprovado,
+                    apagado,
+                    datacad,
+                    dataalt
+                )
+                values 
+                (
+                    @id_equipe,
+                    @lane,
+                    @nick,
+                    @mensagem,
+                    0,
+                    0,
+                    getdate(),
+                    null
+                )
+
+        COMMIT TRAN
+            SELECT '{ "resultado" : "sucesso", "msg" : "Cadastro realizado com sucesso!" , "class" : "success" }' as retorno
+    END TRY
+    BEGIN CATCH                    
+        ROLLBACK TRAN   
+            SELECT '{ "resultado" : "erro", "msg" : "Cadastro não realizado!\n motivo:'+ ERROR_MESSAGE() +'" , "class" : "error" }' as retorno               
+    END CATCH
+--END#espera_cadastrar_pedido#
+
+--#espera_login#
+    select 
+        * 
+    from 
+        equipe_espera 
+    where 
+        apagado = 0 and 
+        nomeTime = cast(@equipe as varchar(max))
+--END#espera_login#
+
+--#espera_mensagem#
+    select 
+        p.id,
+        p.lane,
+        p.nick,
+        p.aprovado,
+        p.mensagem
+    from 
+        equipe_espera e
+        inner join pedido_espera p on p.id_equipe_espera=e.id
+            and e.id=@id
+            and e.apagado=0
+            and p.apagado=0
+--END#espera_mensagem#
+
