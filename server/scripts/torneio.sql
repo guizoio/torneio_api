@@ -254,13 +254,14 @@
 --END#espera_mensagem#
 
 --#espera_mensagem_deletar#
-BEGIN TRY
+    BEGIN TRY
         BEGIN TRAN 
 
             update 
                 pedido_espera 
             set 
-                apagado=1 
+                apagado=1,
+                dataalt=getdate()
             where 
                 id = @id
                     
@@ -273,5 +274,153 @@ BEGIN TRY
     END CATCH 
 --END#espera_mensagem_deletar#
 
+--#espera_mensagem_lida#
+    BEGIN TRY
+        BEGIN TRAN 
 
+            update 
+                pedido_espera 
+            set 
+                aprovado=1,
+                dataalt=getdate()
+            where 
+                id = @id
+                    
+        COMMIT TRAN
+            SELECT '{ "resultado" : "sucesso", "msg" : "Mensagem apagado com sucesso" , "class" : "success" }' as retorno
+    END TRY
+    BEGIN CATCH                    
+        ROLLBACK TRAN   
+            SELECT '{ "resultado" : "erro", "msg" : "Não deletado!\n motivo:'+ ERROR_MESSAGE() +'" , "class" : "error" }' as retorno               
+    END CATCH 
+--END#espera_mensagem_lida#
 
+--#espera_mensagem_rejeitar#
+    BEGIN TRY
+        BEGIN TRAN 
+
+            update 
+                pedido_espera 
+            set 
+                aprovado=3,
+                dataalt=getdate()
+            where 
+                id = @id
+                    
+        COMMIT TRAN
+            SELECT '{ "resultado" : "sucesso", "msg" : "Mensagem apagado com sucesso" , "class" : "success" }' as retorno
+    END TRY
+    BEGIN CATCH                    
+        ROLLBACK TRAN   
+            SELECT '{ "resultado" : "erro", "msg" : "Não deletado!\n motivo:'+ ERROR_MESSAGE() +'" , "class" : "error" }' as retorno               
+    END CATCH 
+--END#espera_mensagem_rejeitar#
+
+--#espera_mensagem_aprovar#
+    DECLARE @laneSQL varchar(max)
+    DECLARE @statusSQL varchar(max)
+    DECLARE @nickSQL varchar(max)
+    DECLARE @idSQL int
+
+    set @laneSQL=@lane
+    set @idSQL=@id
+    set @nickSQL=@nick
+
+    if @laneSQL='top'
+    BEGIN
+        select 
+            @statusSQL = case toplane
+                when '' then 'toplane'
+                else 'erro'
+            end
+        from 
+            equipe_espera 
+        where 
+            id=@idSQL
+            and apagado=0
+    END
+    if @laneSQL='jg'
+    BEGIN
+        select 
+            @statusSQL = case jungle
+                when '' then 'jungle'
+                else 'erro'
+            end
+        from 
+            equipe_espera 
+        where 
+            id=@idSQL
+            and apagado=0
+    END
+    if @laneSQL='mid'
+    BEGIN
+        select 
+            @statusSQL = case midlane
+                when '' then 'midlane'
+                else 'erro'
+            end
+        from 
+            equipe_espera 
+        where 
+            id=@idSQL
+            and apagado=0
+    END
+    if @laneSQL='adc'
+    BEGIN
+        select 
+            @statusSQL = case carry
+                when '' then 'carry'
+                else 'erro'
+            end
+        from 
+            equipe_espera 
+        where 
+            id=@idSQL
+            and apagado=0
+    END
+    if @laneSQL='sup'
+    BEGIN
+        select 
+            @statusSQL = case suporte
+                when '' then 'suporte'
+                else 'erro'
+            end
+        from 
+            equipe_espera 
+        where 
+            id=@idSQL
+            and apagado=0
+    END
+    if @statusSQL!='erro'
+    BEGIN
+        if @statusSQL = 'toplane'
+        BEGIN
+            update equipe_espera set toplane=@nickSQL where id=@idSQL
+        END
+
+        if @statusSQL = 'jungle'
+        BEGIN
+            update equipe_espera set jungle=@nickSQL where id=@idSQL
+        END
+
+        if @statusSQL = 'midlane'
+        BEGIN
+            update equipe_espera set midlane=@nickSQL where id=@idSQL
+        END
+
+        if @statusSQL = 'carry'
+        BEGIN
+            update equipe_espera set carry=@nickSQL where id=@idSQL
+        END
+
+        if @statusSQL = 'suporte'
+        BEGIN
+            update equipe_espera set suporte=@nickSQL where id=@idSQL
+        END
+
+        update pedido_espera set aprovado=2, dataalt=getdate() where id = @idpedido
+
+    END
+
+    select @statusSQL as resultado 
+--END#espera_mensagem_aprovar#
