@@ -146,7 +146,9 @@
                     apagado, 
                     status, 
                     equipe, 
-                    datacad
+                    datacad,
+                    dataEnvioWhats,
+                    qtdEnvioWhats
                 )
                 values 
                 (
@@ -160,7 +162,9 @@
                     0,
                     0,
                     0,
-                    getdate()
+                    getdate(),
+                    null,
+                    0
                 )
 
         COMMIT TRAN
