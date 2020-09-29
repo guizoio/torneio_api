@@ -50,6 +50,14 @@ const controllers = () => {
         console.log(result);
         return result
     }
+    
+    const entrarTorneio_id = async (req) => {
+        var ComandoSQL = await readCommandSql.retornaStringSql('entrarTorneio_id', 'torneio');
+        var result = await db.ExecuteQuery(ComandoSQL, req.params);
+        //var result = await db.ExecuteQuery(ComandoSQL);
+        console.log(result);
+        return result
+    }
 
     const espera_consulta_id = async (req) => {
         var ComandoSQL = await readCommandSql.retornaStringSql('espera_consulta_id', 'torneio');
@@ -223,6 +231,7 @@ const controllers = () => {
         data_jogos,
         espera_cadastrar,
         espera_consulta,
+        entrarTorneio_id,
         espera_consulta_id,
         espera_cadastrar_pedido,
         espera_login,

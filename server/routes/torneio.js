@@ -27,6 +27,12 @@ module.exports = (server) => {
         return next();
     });
 
+    server.get('/torneio/espera/entrarTorneio/:id', async (req, res, next) => {
+        const result = await controllerTorneio.controllers().entrarTorneio_id(req)
+        res.send(result.recordset);
+        return next();
+    });
+
     server.get('/torneio/espera/consulta/:id', async (req, res, next) => {
         const result = await controllerTorneio.controllers().espera_consulta_id(req)
         res.send(result.recordset);
