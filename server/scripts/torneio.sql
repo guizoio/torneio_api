@@ -195,46 +195,51 @@
 --END#espera_consulta_id#
 
 --#entrarTorneio_id#
-    BEGIN TRY
-        BEGIN TRAN 
-            INSERT into equipe
-                select 
-                    toplane
-                    ,jungle
-                    ,midlane
-                    ,carry
-                    ,suporte
-                    ,nomeTime
-                    ,''
-                    ,getdate()
-                    ,0
-                    ,[status]
-                    ,apagado
-                    ,senha
-                    ,0
-                from 
-                    equipe_espera 
-                where 
-                    toplane <> '' and 
-                    jungle  <> '' and 
-                    midlane <> '' and 
-                    carry   <> '' and 
-                    suporte <> '' and 
-                    id=@id
 
-                update equipe_espera set apagado=2 where id=@id
-                insert into torneio..usuario values ((select toplane from equipe_espera where id = @id), 'Top Lane', 0, 0, 0, (select nomeTime from equipe_espera where id = @id))
-                insert into torneio..usuario values ((select jungle from equipe_espera where id = @id), 'Jungle', 0, 0, 0, (select nomeTime from equipe_espera where id = @id))
-                insert into torneio..usuario values ((select midlane from equipe_espera where id = @id), 'Mid Lane', 0, 0, 0, (select nomeTime from equipe_espera where id = @id))
-                insert into torneio..usuario values ((select carry from equipe_espera where id = @id), 'Adc', 0, 0, 0, (select nomeTime from equipe_espera where id = @id))
-                insert into torneio..usuario values ((select suporte from equipe_espera where id = @id), 'Suporte', 0, 0, 0, (select nomeTime from equipe_espera where id = @id))
-            COMMIT TRAN
-            SELECT '{ "resultado" : "sucesso", "msg" : "Cadastro realizado com sucesso!" , "class" : "success" }' as retorno
-    END TRY
-    BEGIN CATCH                    
-        ROLLBACK TRAN   
-            SELECT '{ "resultado" : "erro", "msg" : "Cadastro não realizado!\n motivo:'+ ERROR_MESSAGE() +'" , "class" : "error" }' as retorno               
-    END CATCH
+    EXEC [torneio].[dbo].[SP_equipe_espera_entrar_torneio] @id
+
+
+    -- BEGIN TRY
+    --     BEGIN TRAN 
+    --         INSERT into equipe
+    --             select 
+    --                 toplane
+    --                 ,jungle
+    --                 ,midlane
+    --                 ,carry
+    --                 ,suporte
+    --                 ,nomeTime
+    --                 ,''
+    --                 ,getdate()
+    --                 ,0
+    --                 ,[status]
+    --                 ,apagado
+    --                 ,senha
+    --                 ,0
+    --             from 
+    --                 equipe_espera 
+    --             where 
+    --                 toplane <> '' and 
+    --                 jungle  <> '' and 
+    --                 midlane <> '' and 
+    --                 carry   <> '' and 
+    --                 suporte <> '' and 
+    --                 id=@id
+
+    --             update equipe_espera set apagado=2 where id=@id
+    --             insert into torneio..usuario values ((select toplane from equipe_espera where id = @id), 'Top Lane', 0, 0, 0, (select nomeTime from equipe_espera where id = @id))
+    --             insert into torneio..usuario values ((select jungle from equipe_espera where id = @id), 'Jungle', 0, 0, 0, (select nomeTime from equipe_espera where id = @id))
+    --             insert into torneio..usuario values ((select midlane from equipe_espera where id = @id), 'Mid Lane', 0, 0, 0, (select nomeTime from equipe_espera where id = @id))
+    --             insert into torneio..usuario values ((select carry from equipe_espera where id = @id), 'Adc', 0, 0, 0, (select nomeTime from equipe_espera where id = @id))
+    --             insert into torneio..usuario values ((select suporte from equipe_espera where id = @id), 'Suporte', 0, 0, 0, (select nomeTime from equipe_espera where id = @id))
+            
+    --         COMMIT TRAN
+    --         SELECT '{ "resultado" : "sucesso", "msg" : "Cadastro realizado com sucesso!" , "class" : "success" }' as retorno
+    -- END TRY
+    -- BEGIN CATCH                    
+    --     ROLLBACK TRAN   
+    --         SELECT '{ "resultado" : "erro", "msg" : "Cadastro não realizado!\n motivo:'+ ERROR_MESSAGE() +'" , "class" : "error" }' as retorno               
+    -- END CATCH
 
 --END#entrarTorneio_id#
 
