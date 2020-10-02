@@ -6,7 +6,10 @@ const Acesso = new UsuarioTokenAcesso();
 
 const crypto = require('crypto');
 const ReadCommandSql = require('../common/readCommandSql');
+const { request } = require('http');
 const readCommandSql = new ReadCommandSql();
+
+const consultaa = require('../controllers/apilol')
 
 
 const controllers = () => {
@@ -217,9 +220,13 @@ const controllers = () => {
         return result
     }
 
-    
-
-    
+    const gettoken = async (req) => {
+        var ComandoSQL = await readCommandSql.retornaStringSql('gettoken', 'torneio');
+        var result = await db.ExecuteQuery(ComandoSQL, req.body);
+        //var result = await db.ExecuteQuery(ComandoSQL);
+        console.log(result);
+        return result
+    }
     
     return Object.create({
         cadastrar,
@@ -239,7 +246,8 @@ const controllers = () => {
         espera_mensagem_deletar,
         espera_mensagem_lida,
         espera_mensagem_rejeitar,
-        espera_mensagem_aprovar
+        espera_mensagem_aprovar,
+        gettoken
     })
 
 }

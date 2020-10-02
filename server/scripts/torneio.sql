@@ -477,3 +477,7 @@
 
     select @statusSQL as resultado 
 --END#espera_mensagem_aprovar#
+
+--#gettoken#
+    select *,DATEDIFF(HOUR,datacad,getdate())as dif from tbiApilol
+--END#gettoken#

@@ -1,4 +1,7 @@
-const controllerTorneio = require('../controllers/torneio')
+const controllerTorneio = require('../controllers/torneio');
+
+const consultaa = require('../controllers/apilol');
+
 const UsuarioTokenAcesso = require('../common/protecaoTokenAcesso');
 const Acesso = new UsuarioTokenAcesso();
 module.exports = (server) => {
@@ -114,6 +117,18 @@ module.exports = (server) => {
     server.get('/torneio/data/jogos', async (req, res, next) => {
         const result = await controllerTorneio.controllers().data_jogos(req)
         res.send(result.recordset);
+        return next();
+    });
+
+    server.get('/torneio/apilol/gettoken', async (req, res, next) => {
+        const result = await controllerTorneio.controllers().gettoken(req)
+        res.send(result.recordset);
+        return next();
+    });
+
+    server.post('/torneio/apilol', async (req, res, next) => {
+        const result = await consultaa.controllers().consulta(req)
+        res.send(result);
         return next();
     });
 
