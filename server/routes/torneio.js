@@ -132,4 +132,15 @@ module.exports = (server) => {
         return next();
     });
 
+
+
+
+
+
+    server.get('/bolao/carrega/jogos', async (req, res, next) => {
+        const result = await controllerTorneio.controllers().bolao_jogos(req)
+        res.send(result.recordset);
+        return next();
+    });
+
 }

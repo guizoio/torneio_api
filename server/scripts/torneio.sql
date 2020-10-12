@@ -481,3 +481,16 @@
 --#gettoken#
     select *,DATEDIFF(HOUR,datacad,getdate())as dif from tbiApilol
 --END#gettoken#
+
+--#bolao_jogos#
+   select 
+        j.*,
+        e1.nome_equipe [equipe_1],
+        e2.nome_equipe [equipe_2],
+        e1.foto_equipe [foto_1],
+        e2.foto_equipe [foto_2]
+    from 
+        bolao.jogos j
+        inner join bolao.equipes e1 on e1.id=j.id_time1
+        inner join bolao.equipes e2 on e2.id=j.id_time2 
+--END#bolao_jogos#

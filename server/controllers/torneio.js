@@ -227,6 +227,14 @@ const controllers = () => {
         console.log(result);
         return result
     }
+
+    const bolao_jogos = async (req) => {
+        var ComandoSQL = await readCommandSql.retornaStringSql('bolao_jogos', 'torneio');
+        var result = await db.ExecuteQuery(ComandoSQL, req.body);
+        //var result = await db.ExecuteQuery(ComandoSQL);
+        console.log(result);
+        return result
+    }
     
     return Object.create({
         cadastrar,
@@ -247,7 +255,8 @@ const controllers = () => {
         espera_mensagem_lida,
         espera_mensagem_rejeitar,
         espera_mensagem_aprovar,
-        gettoken
+        gettoken,
+        bolao_jogos
     })
 
 }
