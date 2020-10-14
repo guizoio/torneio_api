@@ -235,6 +235,55 @@ const controllers = () => {
         console.log(result);
         return result
     }
+
+    const bolao_consulta_usuario = async (req) => {
+        var ComandoSQL = await readCommandSql.retornaStringSql('bolao_consulta_usuario', 'torneio');
+        var result = await db.ExecuteQuery(ComandoSQL, req.body);
+        //var result = await db.ExecuteQuery(ComandoSQL);
+        console.log(result);
+        return result
+    }
+
+    const bolao_cadastrar_usuario = async (req) => {
+        //req.body.senha = crypto.createHmac('sha256', req.body.senha).digest('hex');
+        var ComandoSQL = await readCommandSql.retornaStringSql('bolao_cadastrar_usuario', 'torneio');
+        var result = await db.ExecuteQuery(ComandoSQL, req.body);
+        console.log(result);
+        return result
+    }
+
+    const bolao_login = async (req) => {
+
+        var senha = req.body.senha;
+
+        var ComandoSQL = await readCommandSql.retornaStringSql('bolao_login', 'torneio');
+        var usuarioBanco = await db.ExecuteQuery(ComandoSQL, req.body);
+
+        if (usuarioBanco.recordset != undefined && usuarioBanco.recordset.length > 0) {
+
+            // valida se as senhas são diferentes
+            //console.log(usuarioBanco.recordset[0].equipe);
+            console.log(usuarioBanco);
+            if (senha != usuarioBanco.recordset[0].senha) {
+                return { "Status": false, "mensagem": "nome da equipe ou senha incorreta" };
+            }
+
+            // se estiver tudo ok, gera o token e retorna o json
+            var tokenAcesso = Acesso.gerarTokenAcesso(req.body.equipe);
+            return { 
+                "TokenAcesso": tokenAcesso, 
+                "nick": usuarioBanco.recordset[0].nick, 
+                "login": usuarioBanco.recordset[0].login, 
+                "nome": usuarioBanco.recordset[0].nome, 
+                "status_conta": usuarioBanco.recordset[0].status, 
+                "id": usuarioBanco.recordset[0].id, 
+                "Status": true};
+
+        }
+        else {
+            return { "Status": false, "mensagem": "Usuário não cadastrado no sistema" };
+        }
+    }
     
     return Object.create({
         cadastrar,
@@ -256,7 +305,10 @@ const controllers = () => {
         espera_mensagem_rejeitar,
         espera_mensagem_aprovar,
         gettoken,
-        bolao_jogos
+        bolao_jogos,
+        bolao_consulta_usuario,
+        bolao_cadastrar_usuario,
+        bolao_login
     })
 
 }

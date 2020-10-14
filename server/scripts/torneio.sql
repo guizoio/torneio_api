@@ -494,3 +494,32 @@
         inner join bolao.equipes e1 on e1.id=j.id_time1
         inner join bolao.equipes e2 on e2.id=j.id_time2 
 --END#bolao_jogos#
+
+--#bolao_consulta_usuario#
+   select nick,login from bolao.usuario where apagado=0
+--END#bolao_consulta_usuario#
+
+--#bolao_cadastrar_usuario#
+    BEGIN TRY
+        BEGIN TRAN 
+
+            insert bolao.usuario values (@nick, @nome, @login, @senha, getdate(), 0,0) 
+                    
+        COMMIT TRAN
+            SELECT '{ "resultado" : "sucesso", "msg" : "Cadastro realizado com sucesso!" , "class" : "success" }' as retorno
+    END TRY
+    BEGIN CATCH                    
+        ROLLBACK TRAN   
+            SELECT '{ "resultado" : "erro", "msg" : "Cadastro não realizado!\n motivo:'+ ERROR_MESSAGE() +'" , "class" : "error" }' as retorno               
+    END CATCH
+--END#bolao_cadastrar_usuario#
+
+--#bolao_login#
+    select 
+        * 
+    from 
+        bolao.usuario 
+    where 
+        apagado = 0 and 
+        login = cast(@login as varchar(max))
+--END#bolao_login#

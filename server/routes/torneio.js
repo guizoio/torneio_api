@@ -143,4 +143,21 @@ module.exports = (server) => {
         return next();
     });
 
+    server.get('/bolao/consulta/usuario', async (req, res, next) => {
+        const result = await controllerTorneio.controllers().bolao_consulta_usuario(req)
+        res.send(result.recordset);
+        return next();
+    });
+
+    server.post('/bolao/cadastrar/usuario', async (req, res, next) => {
+        const result = await controllerTorneio.controllers().bolao_cadastrar_usuario(req)
+        res.send(result.recordset);
+        return next();
+    });
+
+    server.post('/bolao/login', async (req, res, next) => {
+        const result = await controllerTorneio.controllers().bolao_login(req)
+        res.send(result);
+        return next();
+    });
 }
