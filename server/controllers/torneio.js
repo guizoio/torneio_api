@@ -284,6 +284,25 @@ const controllers = () => {
             return { "Status": false, "mensagem": "Usuário não cadastrado no sistema" };
         }
     }
+
+
+
+    const cad_consulta = async (req) => {
+        var ComandoSQL = await readCommandSql.retornaStringSql('cad_consulta', 'torneio');
+        var result = await db.ExecuteQuery(ComandoSQL, req.params);
+        //var result = await db.ExecuteQuery(ComandoSQL);
+        console.log(result);
+        return result
+    }
+
+    const cad_cadastrar = async (req) => {
+        //req.body.senha = crypto.createHmac('sha256', req.body.senha).digest('hex');
+        var ComandoSQL = await readCommandSql.retornaStringSql('cad_cadastrar', 'torneio');
+        var result = await db.ExecuteQuery(ComandoSQL, req.body);
+        console.log(result);
+        return result
+    }
+    
     
     return Object.create({
         cadastrar,
@@ -308,7 +327,9 @@ const controllers = () => {
         bolao_jogos,
         bolao_consulta_usuario,
         bolao_cadastrar_usuario,
-        bolao_login
+        bolao_login,
+        cad_consulta,
+        cad_cadastrar
     })
 
 }

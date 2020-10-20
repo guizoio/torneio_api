@@ -523,3 +523,39 @@
         apagado = 0 and 
         login = cast(@login as varchar(max))
 --END#bolao_login#
+
+
+--#cad_consulta#
+    select * from nick where apagado=0 and nick=@nick
+--END#cad_consulta#
+
+
+
+
+--#cad_cadastrar#
+    BEGIN TRY
+        BEGIN TRAN 
+
+            insert into nick
+                values(
+                    @nick,
+                    null,
+                    null,
+                    @lane1,
+                    @lane2,
+                    0,
+                    0,
+                    getdate(),
+                    null,
+                    0,
+                    0
+                )
+
+        COMMIT TRAN
+            SELECT '{ "resultado" : "sucesso", "msg" : "Cadastro realizado com sucesso!" , "class" : "success" }' as retorno
+    END TRY
+    BEGIN CATCH                    
+        ROLLBACK TRAN   
+            SELECT '{ "resultado" : "erro", "msg" : "Cadastro não realizado!\n motivo:'+ ERROR_MESSAGE() +'" , "class" : "error" }' as retorno               
+    END CATCH
+--END#cad_cadastrar#

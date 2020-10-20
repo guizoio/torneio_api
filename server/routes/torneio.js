@@ -160,4 +160,23 @@ module.exports = (server) => {
         res.send(result);
         return next();
     });
+
+
+
+
+
+
+    server.get('/cad/consulta/:nick', async (req, res, next) => {
+        const result = await controllerTorneio.controllers().cad_consulta(req)
+        res.send(result.recordset);
+        return next();
+    });
+    server.post('/cad/cadastrar', async (req, res, next) => {
+        const result = await controllerTorneio.controllers().cad_cadastrar(req)
+        res.send(result.recordset);
+        return next();
+    });
+
+
+
 }
