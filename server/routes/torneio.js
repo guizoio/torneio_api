@@ -177,6 +177,10 @@ module.exports = (server) => {
         return next();
     });
 
-
+    server.get('/cad/consulta/jogadores', async (req, res, next) => {
+        const result = await controllerTorneio.controllers().cad_consulta_jogadores(req)
+        res.send(result.recordset);
+        return next();
+    });
 
 }

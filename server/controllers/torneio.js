@@ -302,8 +302,15 @@ const controllers = () => {
         console.log(result);
         return result
     }
-    
-    
+
+    const cad_consulta_jogadores = async (req) => {
+        var ComandoSQL = await readCommandSql.retornaStringSql('cad_consulta_jogadores', 'torneio');
+        var result = await db.ExecuteQuery(ComandoSQL, req.body);
+        //var result = await db.ExecuteQuery(ComandoSQL);
+        console.log(result);
+        return result
+    }
+
     return Object.create({
         cadastrar,
         consulta,
@@ -329,7 +336,8 @@ const controllers = () => {
         bolao_cadastrar_usuario,
         bolao_login,
         cad_consulta,
-        cad_cadastrar
+        cad_cadastrar,
+        cad_consulta_jogadores
     })
 
 }

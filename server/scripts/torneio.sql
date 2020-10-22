@@ -524,13 +524,9 @@
         login = cast(@login as varchar(max))
 --END#bolao_login#
 
-
 --#cad_consulta#
     select * from nick where apagado=0 and nick=@nick
 --END#cad_consulta#
-
-
-
 
 --#cad_cadastrar#
     BEGIN TRY
@@ -559,3 +555,7 @@
             SELECT '{ "resultado" : "erro", "msg" : "Cadastro não realizado!\n motivo:'+ ERROR_MESSAGE() +'" , "class" : "error" }' as retorno               
     END CATCH
 --END#cad_cadastrar#
+
+--#cad_consulta_jogadores#
+    select nick, lane1, lane2 from nick where apagado=0
+--END#cad_consulta_jogadores#
