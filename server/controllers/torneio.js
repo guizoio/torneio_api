@@ -64,7 +64,7 @@ const controllers = () => {
 
     const espera_consulta_id = async (req) => {
         var ComandoSQL = await readCommandSql.retornaStringSql('espera_consulta_id', 'torneio');
-        var result = await db.ExecuteQuery(ComandoSQL, req.params);
+        var result = await db.ExecuteQuery(ComandoSQL, req.body);
         //var result = await db.ExecuteQuery(ComandoSQL);
         console.log(result);
         return result
@@ -236,6 +236,14 @@ const controllers = () => {
         return result
     }
 
+    const bolao_jogos_page = async (req) => {
+        var ComandoSQL = await readCommandSql.retornaStringSql('bolao_jogos_page', 'torneio');
+        var result = await db.ExecuteQuery(ComandoSQL, req.params);
+        //var result = await db.ExecuteQuery(ComandoSQL);
+        console.log(result);
+        return result
+    }
+
     const bolao_consulta_usuario = async (req) => {
         var ComandoSQL = await readCommandSql.retornaStringSql('bolao_consulta_usuario', 'torneio');
         var result = await db.ExecuteQuery(ComandoSQL, req.body);
@@ -332,6 +340,7 @@ const controllers = () => {
         espera_mensagem_aprovar,
         gettoken,
         bolao_jogos,
+        bolao_jogos_page,
         bolao_consulta_usuario,
         bolao_cadastrar_usuario,
         bolao_login,
