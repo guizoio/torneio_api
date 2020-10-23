@@ -529,6 +529,21 @@
     END CATCH
 --END#bolao_cadastrar_usuario#
 
+--#bolaocadastrarpalpite#
+    BEGIN TRY
+        BEGIN TRAN 
+
+            insert bolao.palpite values (@id_usuario, @jogo, @palpite, @page, 0, getdate(), null) 
+                    
+        COMMIT TRAN
+            SELECT '{ "resultado" : "sucesso", "msg" : "Cadastro realizado com sucesso!" , "class" : "success" }' as retorno
+    END TRY
+    BEGIN CATCH                    
+        ROLLBACK TRAN   
+            SELECT '{ "resultado" : "erro", "msg" : "Cadastro não realizado!\n motivo:'+ ERROR_MESSAGE() +'" , "class" : "error" }' as retorno               
+    END CATCH
+--END#bolaocadastrarpalpite#
+
 --#bolao_login#
     select 
         * 

@@ -260,6 +260,14 @@ const controllers = () => {
         return result
     }
 
+    const bolao_cadastrar_palpite = async (req) => {
+        //req.body.senha = crypto.createHmac('sha256', req.body.senha).digest('hex');
+        var ComandoSQL = await readCommandSql.retornaStringSql('bolaocadastrarpalpite', 'torneio');
+        var result = await db.ExecuteQuery(ComandoSQL, req.body);
+        console.log(result);
+        return result
+    }
+
     const bolao_login = async (req) => {
 
         var senha = req.body.senha;
@@ -343,6 +351,7 @@ const controllers = () => {
         bolao_jogos_page,
         bolao_consulta_usuario,
         bolao_cadastrar_usuario,
+        bolao_cadastrar_palpite,
         bolao_login,
         cad_consulta,
         cad_cadastrar,

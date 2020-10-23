@@ -159,6 +159,12 @@ module.exports = (server) => {
         return next();
     });
 
+    server.post('/bolao/cadastrar/palpite', async (req, res, next) => {
+        const result = await controllerTorneio.controllers().bolao_cadastrar_palpite(req)
+        res.send(result.recordset);
+        return next();
+    });
+
     server.post('/bolao/login', async (req, res, next) => {
         const result = await controllerTorneio.controllers().bolao_login(req)
         res.send(result);
