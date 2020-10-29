@@ -533,6 +533,7 @@
     BEGIN TRY
         BEGIN TRAN 
 
+            update bolao.palpite set apagado=1, dataalt=GETDATE() where id_usuario=@id_usuario and pagination=@page and jogo=@jogo and apagado=0 
             insert bolao.palpite values (@id_usuario, @jogo, @palpite, @page, 0, getdate(), null) 
                     
         COMMIT TRAN
@@ -589,3 +590,118 @@
 --#cad_consulta_jogadores#
     select nick, lane1, lane2 from nick where apagado=0
 --END#cad_consulta_jogadores#
+
+--#bolao_carrega_palpite#
+    select 
+        * 
+    from 
+        bolao.palpite 
+    where 
+        id_usuario=@id and 
+        pagination=@page and 
+        apagado=0
+--END#bolao_carrega_palpite#
+
+--#bolao_carrega_icone#
+    select
+        j.pagination 
+        ,COUNT(j.jogo) as qtd
+        ,count(p.jogo) as palpite
+        ,case
+            when COUNT(j.jogo)=count(p.jogo) then 'fe-check'
+            else 'fe-clock'
+        end [class]
+    from 
+        bolao.jogos j
+        left join bolao.palpite p on p.pagination=j.pagination
+            and p.apagado=0
+            and p.id_usuario=@id
+    GROUP BY j.pagination
+--END#bolao_carrega_icone#
+
+--#graficoinicial#
+    select 
+        j.numero_jogo
+        ,j.jogo [numero-jogo]
+        ,j.data_jogo
+
+        ,e1.foto_equipe [foto-1]
+        ,e1.nome_equipe [time-1]
+        ,p1.qtd [qtd-time-1]
+
+        ,e2.foto_equipe [foto-2]
+        ,e2.nome_equipe [time-2]
+        ,p2.qtd [qtd-time-2]
+
+        ,j.pagination
+
+        ,COUNT(pp.id)  [qtd-total]
+
+        ,cast(p1.qtd*100/COUNT(pp.id) as float(1)) as por1
+        ,cast(p2.qtd*100/COUNT(pp.id) as float(1)) as por2
+    from 
+        bolao.jogos j
+        inner join bolao.equipes e1 on e1.id=j.id_time1
+        inner join bolao.equipes e2 on e2.id=j.id_time2
+        left join(
+            select 
+                count(id) [qtd]
+                ,jogo
+            from 
+                bolao.palpite 
+            where
+                apagado=0 and 
+                palpite=1
+            GROUP BY
+                jogo
+        )p1 on p1.jogo=j.jogo
+        left join(
+            select 
+                count(id) [qtd]
+                ,jogo
+            from 
+                bolao.palpite 
+            where
+                apagado=0 and 
+                palpite=2
+            GROUP BY
+                jogo 
+        )p2 on p2.jogo=j.jogo
+        left join bolao.palpite pp on pp.jogo=j.jogo
+            and pp.apagado=0
+    GROUP BY
+        j.numero_jogo ,j.data_jogo,e1.nome_equipe, e1.foto_equipe, 
+        e2.foto_equipe, p1.qtd, e2.nome_equipe, p2.qtd, j.pagination,j.jogo
+--END#graficoinicial#
+
+--#graficolista#
+    select 
+        j.numero_jogo   [NUMERO_JOGO]
+        ,j.jogo         [JOGO]
+        ,j.data_jogo    [DATA]
+        ,e1.nome_equipe [TIME1]
+        ,e1.foto_equipe [FOTO1]
+        ,e2.foto_equipe [FOTO2]
+        ,e2.nome_equipe [TIME2]
+        ,u.nick [NICK]
+        ,case
+            when p.palpite=1 then e1.nome_equipe
+            when p.palpite=2 then e2.nome_equipe
+            else 'ERRO'
+        end [PALPITE]
+        ,case
+            when p.palpite=1 then e1.foto_equipe
+            when p.palpite=2 then e2.foto_equipe
+            else 'ERRO'
+        end [FOTO]
+    from 
+        bolao.jogos j
+        inner join bolao.palpite p on p.jogo=j.jogo
+            and p.apagado=0
+            and j.jogo=@id
+        inner join bolao.usuario u on u.id=p.id_usuario
+            and u.apagado=0
+        inner join bolao.equipes e1 on e1.id=j.id_time1
+        inner join bolao.equipes e2 on e2.id=j.id_time2
+    order by u.nick
+--END#graficolista#

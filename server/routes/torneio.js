@@ -147,6 +147,18 @@ module.exports = (server) => {
         return next();
     });
 
+    server.get('/bolao/carrega/palpite/:id/:page', async (req, res, next) => {
+        const result = await controllerTorneio.controllers().bolao_carrega_palpite(req)
+        res.send(result.recordset);
+        return next();
+    });
+
+    server.get('/bolao/carrega/icone/:id', async (req, res, next) => {
+        const result = await controllerTorneio.controllers().bolao_carrega_icone(req)
+        res.send(result.recordset);
+        return next();
+    });
+
     server.get('/bolao/consulta/usuario', async (req, res, next) => {
         const result = await controllerTorneio.controllers().bolao_consulta_usuario(req)
         res.send(result.recordset);
@@ -171,6 +183,17 @@ module.exports = (server) => {
         return next();
     });
 
+    server.get('/bolao/carrega/grafico_inicial', async (req, res, next) => {
+        const result = await controllerTorneio.controllers().graficoinicial(req)
+        res.send(result.recordset);
+        return next();
+    });
+    
+    server.get('/bolao/lista/grafico/:id', async (req, res, next) => {
+        const result = await controllerTorneio.controllers().graficolista(req)
+        res.send(result.recordset);
+        return next();
+    });
 
 
 

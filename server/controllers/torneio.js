@@ -64,7 +64,7 @@ const controllers = () => {
 
     const espera_consulta_id = async (req) => {
         var ComandoSQL = await readCommandSql.retornaStringSql('espera_consulta_id', 'torneio');
-        var result = await db.ExecuteQuery(ComandoSQL, req.body);
+        var result = await db.ExecuteQuery(ComandoSQL, req.params);
         //var result = await db.ExecuteQuery(ComandoSQL);
         console.log(result);
         return result
@@ -327,6 +327,39 @@ const controllers = () => {
         return result
     }
 
+    const bolao_carrega_palpite = async (req) => {
+        var ComandoSQL = await readCommandSql.retornaStringSql('bolao_carrega_palpite', 'torneio');
+        var result = await db.ExecuteQuery(ComandoSQL, req.params);
+        //var result = await db.ExecuteQuery(ComandoSQL);
+        console.log(result);
+        return result
+    }
+
+    const bolao_carrega_icone = async (req) => {
+        var ComandoSQL = await readCommandSql.retornaStringSql('bolao_carrega_icone', 'torneio');
+        var result = await db.ExecuteQuery(ComandoSQL, req.params);
+        //var result = await db.ExecuteQuery(ComandoSQL);
+        console.log(result);
+        return result
+    }
+
+    const graficoinicial = async (req) => {
+        var ComandoSQL = await readCommandSql.retornaStringSql('graficoinicial', 'torneio');
+        var result = await db.ExecuteQuery(ComandoSQL, req.body);
+        //var result = await db.ExecuteQuery(ComandoSQL);
+        console.log(result);
+        return result
+    }
+
+    const graficolista = async (req) => {
+        var ComandoSQL = await readCommandSql.retornaStringSql('graficolista', 'torneio');
+        var result = await db.ExecuteQuery(ComandoSQL, req.params);
+        //var result = await db.ExecuteQuery(ComandoSQL);
+        console.log(result);
+        return result
+    }
+    
+    
     return Object.create({
         cadastrar,
         consulta,
@@ -338,6 +371,7 @@ const controllers = () => {
         espera_cadastrar,
         espera_consulta,
         entrarTorneio_id,
+        
         espera_consulta_id,
         espera_cadastrar_pedido,
         espera_login,
@@ -347,12 +381,18 @@ const controllers = () => {
         espera_mensagem_rejeitar,
         espera_mensagem_aprovar,
         gettoken,
+
         bolao_jogos,
         bolao_jogos_page,
         bolao_consulta_usuario,
         bolao_cadastrar_usuario,
         bolao_cadastrar_palpite,
         bolao_login,
+        bolao_carrega_palpite,
+        bolao_carrega_icone,
+        graficoinicial,
+        graficolista,
+
         cad_consulta,
         cad_cadastrar,
         cad_consulta_jogadores
